@@ -58,7 +58,7 @@ const ModalOverly = ({ id, getValue }) => {
 	const dispatch = useDispatch()
 
 	const addQuestionType = (e, id, type) => {
-		console.log(e.target.parentElement.parentElement)
+		// console.log(e.target.parentElement.parentElement)
 		if (e.target.parentNode.id === id) {
 			getValue(e.currentTarget.textContent, type)
 		}
