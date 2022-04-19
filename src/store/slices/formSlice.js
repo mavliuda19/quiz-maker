@@ -1,7 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit'
+/* eslint-disable no-param-reassign */
+import { createSlice, current } from '@reduxjs/toolkit'
 
 const initState = {
-   questionTile: '',
+   questionTile: 'Новая форма',
    questionDescription: '',
    forms: [
       {
@@ -71,12 +72,14 @@ export const formSlice = createSlice({
          })
       },
       removeOptionText(state, action) {
-         const id = action.payload
-         state.forms = state.forms.map((form) => {
-            return form.options.filter((option) => {
-               return option.id !== id
-            })
-         })
+         const { formId, id } = action.payload
+         const currentQuestionField = state.forms.find(
+            (form) => form.id === formId
+         )
+         const currentOption = currentQuestionField.options.findIndex(
+            (option) => option.id === id
+         )
+         currentQuestionField.options.splice(currentOption, 1)
       },
       changeOptionValue(state, action) {
          const { text, formId, id } = action.payload
@@ -106,6 +109,7 @@ export const formSlice = createSlice({
       requiredQuestion(state, action) {
          const { id } = action.payload
          const currentQuestionField = state.forms.find((form) => form.id === id)
+         console.log(current(currentQuestionField))
          if (currentQuestionField) {
             currentQuestionField.required = !currentQuestionField.required
          }
@@ -122,6 +126,24 @@ export const formSlice = createSlice({
          const currentQuestionField = state.forms.find((form) => form.id === id)
          if (currentQuestionField) {
             currentQuestionField.answer = false
+         }
+      },
+      chooseAnswer(state, action) {
+         const { formId, answer } = action.payload
+         const currentQuestionField = state.forms.find(
+            (form) => form.id === formId
+         )
+         if (currentQuestionField) {
+            currentQuestionField.answerKey = answer
+         }
+      },
+      addPoint(state, action) {
+         const { formId, point } = action.payload
+         const currentQuestionField = state.forms.find(
+            (form) => form.id === formId
+         )
+         if (currentQuestionField) {
+            currentQuestionField.points = point
          }
       },
    },

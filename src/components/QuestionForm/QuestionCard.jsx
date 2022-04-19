@@ -1,10 +1,11 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { formActions } from '../../store/slices/formSlice'
 
 export const QuestionCard = () => {
    const dispatch = useDispatch()
+   const { forms } = useSelector((state) => state.form)
    const addFormhandler = () => {
       dispatch(
          formActions.addQuestionField({
@@ -13,32 +14,48 @@ export const QuestionCard = () => {
       )
    }
    return (
-      <StyledContainer>
-         <StyledSpan onClick={() => addFormhandler()}>
-            <img
-               src="https://img.icons8.com/external-tanah-basah-detailed-outline-tanah-basah/344/external-plus-user-interface-tanah-basah-detailed-outline-tanah-basah.png"
-               alt=""
-            />
-         </StyledSpan>
-         <StyledSpan>
-            <img src="https://www.svgrepo.com/show/164170/import.svg" alt="" />
-         </StyledSpan>
-         <StyledSpan>
-            <img
-               src="https://www.svgrepo.com/show/336640/add-text.svg"
-               alt=""
-            />
-         </StyledSpan>
-         <StyledSpan>
-            <img
-               src="https://cdn-icons.flaticon.com/png/128/696/premium/696755.png?token=exp=1650003851~hmac=156c19a52bea93e04ff164960514b879"
-               alt=""
-            />
-         </StyledSpan>
-         <StyledSpan>
-            <img src="https://www.svgrepo.com/show/347882/video.svg" alt="" />
-         </StyledSpan>
-      </StyledContainer>
+      <>
+         {forms.map((form) => {
+            return (
+               <div key={form.id}>
+                  {!form.answer && (
+                     <StyledContainer key={form.id}>
+                        <StyledSpan onClick={() => addFormhandler()}>
+                           <img
+                              src="https://img.icons8.com/external-tanah-basah-detailed-outline-tanah-basah/344/external-plus-user-interface-tanah-basah-detailed-outline-tanah-basah.png"
+                              alt=""
+                           />
+                        </StyledSpan>
+                        <StyledSpan>
+                           <img
+                              src="https://www.svgrepo.com/show/164170/import.svg"
+                              alt=""
+                           />
+                        </StyledSpan>
+                        <StyledSpan>
+                           <img
+                              src="https://www.svgrepo.com/show/336640/add-text.svg"
+                              alt=""
+                           />
+                        </StyledSpan>
+                        <StyledSpan>
+                           <img
+                              src="https://cdn-icons.flaticon.com/png/128/696/premium/696755.png?token=exp=1650003851~hmac=156c19a52bea93e04ff164960514b879"
+                              alt=""
+                           />
+                        </StyledSpan>
+                        <StyledSpan>
+                           <img
+                              src="https://www.svgrepo.com/show/347882/video.svg"
+                              alt=""
+                           />
+                        </StyledSpan>
+                     </StyledContainer>
+                  )}
+               </div>
+            )
+         })}
+      </>
    )
 }
 

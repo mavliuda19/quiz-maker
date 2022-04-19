@@ -12,7 +12,7 @@ export const AllQuestions = () => {
 
    const modalIsVisible = useSelector((state) => state.ui.modalIsVisible)
    const { forms } = useSelector((state) => state.form)
-   const [value, setValue] = useState()
+   const [value, setValue] = useState('checkbox')
    console.log(forms)
    const changeQuestionText = (title, id) => {
       dispatch(formActions.changeQuestionText({ title, id }))
@@ -23,44 +23,52 @@ export const AllQuestions = () => {
    const onClickHandler = () => {
       dispatch(uiSliceActions.toogle())
    }
+
    return (
       <div>
-         {forms.map((questionForm) => (
-            <MainContainer key={questionForm.id}>
-               <>
-                  <QuestionSection>
-                     <TitleQuestion>
-                        <input
-                           onChange={(e) =>
-                              changeQuestionText(
-                                 e.target.value,
-                                 questionForm.id
-                              )
-                           }
-                           value={questionForm.questionText}
-                           placeholder="Вопрос"
+         {forms.map(
+            (questionForm) =>
+               !questionForm.answer && (
+                  <MainContainer key={questionForm.id}>
+                     <>
+                        <QuestionSection>
+                           <TitleQuestion>
+                              <input
+                                 onChange={(e) =>
+                                    changeQuestionText(
+                                       e.target.value,
+                                       questionForm.id
+                                    )
+                                 }
+                                 value={questionForm.questionText}
+                                 placeholder="Вопрос"
+                              />
+                           </TitleQuestion>
+                           <WrapperSelect onClick={onClickHandler}>
+                              {modalIsVisible && (
+                                 <Modal
+                                    getQuestionType={getQuestionType}
+                                    id={questionForm.id}
+                                 />
+                              )}
+                              <SelectTitle>{value}</SelectTitle>
+                              <SelectOne> ▾</SelectOne>
+                           </WrapperSelect>
+                        </QuestionSection>
+                        <QuestionBody
+                           questionType={questionForm.questionType}
+                           options={questionForm.options}
+                           formId={questionForm.id}
                         />
-                     </TitleQuestion>
-                     <WrapperSelect onClick={onClickHandler}>
-                        {modalIsVisible && (
-                           <Modal
-                              getQuestionType={getQuestionType}
-                              id={questionForm.id}
-                           />
-                        )}
-                        <SelectTitle>{value}</SelectTitle>
-                        <SelectOne> ▾</SelectOne>
-                     </WrapperSelect>
-                  </QuestionSection>
-                  <QuestionBody
-                     questionType={questionForm.questionType}
-                     options={questionForm.options}
-                     formId={questionForm.id}
-                  />
-                  <QuestionFooter id={questionForm.id} forms={forms} />
-               </>
-            </MainContainer>
-         ))}
+                        <QuestionFooter
+                           id={questionForm.id}
+                           forms={forms}
+                           requireds={questionForm.required}
+                        />
+                     </>
+                  </MainContainer>
+               )
+         )}
       </div>
    )
 }
