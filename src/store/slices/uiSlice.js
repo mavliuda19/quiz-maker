@@ -9,7 +9,6 @@ export const uiSlice = createSlice({
          state.modalIsVisible = !state.modalIsVisible
       },
       cancel(state) {
-         console.log('hello ')
          state.modalIsVisible = !false
       },
    },
