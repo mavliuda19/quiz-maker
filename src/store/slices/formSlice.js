@@ -1,12 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
+
 const initState = {
+   questionTile: '',
+   questionDescription: '',
    forms: [
       {
          questionText: 'Вопрос без заголовка',
-         answer: false,
-         answerKey: '',
          questionType: '',
          options: [{ optionText: 'Вариант 1', id: '1jlk2' }],
+         answer: false,
+         answerKey: '',
+         points: 0,
          open: true,
          required: false,
          id: '3l122',
@@ -18,7 +22,15 @@ export const formSlice = createSlice({
    name: 'form',
    initialState: initState,
    reducers: {
-      addForm(state, action) {
+      changeQuestionTitle(state, action) {
+         const title = action.payload
+         state.questionTile = title
+      },
+      changeQuestionDescription(state, action) {
+         const description = action.payload
+         state.questionDescription = description
+      },
+      addQuestionField(state, action) {
          state.forms.push({
             questionText: 'Вопрос без заголовка',
             answer: false,
@@ -30,49 +42,58 @@ export const formSlice = createSlice({
             id: action.payload.id,
          })
       },
-      removeForm(state, action) {
+      removeQuestionField(state, action) {
          const { id } = action.payload
          state.forms = state.forms.filter((form) => form.id !== id)
       },
-      copyQuestion(state, action) {
+      copyQuestionField(state, action) {
          const { id } = action.payload
          const copy = state.forms.find((form) => form.id === id)
          state.forms.push(copy)
+      },
+      changeQuestionText(state, action) {
+         const { title, id } = action.payload
+         const currentQuestionField = state.forms.find((form) => form.id === id)
+         if (currentQuestionField) {
+            currentQuestionField.questionText = title
+         }
       },
       addOptionText(state, action) {
          const { data, formId } = action.payload
          state.forms.map((form) => {
             if (form.id === formId) {
-               form.options.push({
+               return form.options.push({
                   optionText: data.optionText,
                   id: data.id,
                })
             }
+            return form
          })
       },
       removeOptionText(state, action) {
-         state.forms.map(
-            (form) =>
-               (form.options = form.options.filter((optionText) => {
-                  return optionText.id !== action.payload
-               }))
-         )
+         const id = action.payload
+         state.forms = state.forms.map((form) => {
+            return form.options.filter((option) => {
+               return option.id !== id
+            })
+         })
       },
       changeOptionValue(state, action) {
          const { text, formId, id } = action.payload
-         const currentQuestionForm = state.forms.find((form) => {
+
+         const currentQuestionField = state.forms.find((form) => {
             return form.id === formId
          })
 
-         const ques = currentQuestionForm.options.find(
+         const currentOption = currentQuestionField.options.find(
             (option) => option.id === id
          )
 
-         if (ques) {
-            ques.optionText = text
+         if (currentOption) {
+            currentOption.optionText = text
          }
       },
-      changeType(state, action) {
+      changeQuestionType(state, action) {
          const { id, type } = action.payload
          const questionsType = state.forms.find((form) => form.id === id)
          if (questionsType) {
@@ -81,33 +102,26 @@ export const formSlice = createSlice({
             questionsType.questionType = 'text'
          }
       },
-      // openForm(state, action) {
-      //    const { id } = action.payload
 
-      //    const questionFormOpen = state.forms.find((form) => form.id === id)
-      //    if (questionFormOpen) {
-      //       questionFormOpen.open = true
-      //    }
-      // },
-      // closeForm(state, action) {
-      //    const { id } = action.payload
-      //    const questionFormOpen = state.forms.find((form) => form.id === id)
-      //    if (questionFormOpen) {
-      //       questionFormOpen.open = false
-      //    }
-      // },
-      changeQuestionText(state, action) {
-         const { text, id } = action.payload
-         const newquestionText = state.forms.find((form) => form.id === id)
-         if (newquestionText) {
-            newquestionText.questionText = text
-         }
-      },
       requiredQuestion(state, action) {
          const { id } = action.payload
-         const currentQuestionForm = state.forms.find((form) => form.id === id)
-         if (currentQuestionForm) {
-            currentQuestionForm.required = !currentQuestionForm.required
+         const currentQuestionField = state.forms.find((form) => form.id === id)
+         if (currentQuestionField) {
+            currentQuestionField.required = !currentQuestionField.required
+         }
+      },
+      addAnswer(state, action) {
+         const id = action.payload
+         const currentQuestionField = state.forms.find((form) => form.id === id)
+         if (currentQuestionField) {
+            currentQuestionField.answer = !currentQuestionField.answer
+         }
+      },
+      doneAnswer(state, action) {
+         const id = action.payload
+         const currentQuestionField = state.forms.find((form) => form.id === id)
+         if (currentQuestionField) {
+            currentQuestionField.answer = false
          }
       },
    },
