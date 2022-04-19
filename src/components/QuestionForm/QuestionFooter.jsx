@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { formActions } from '../../store/slices/formSlice'
 
-export const QuestionFooter = ({ id, forms }) => {
+export const QuestionFooter = ({ id, forms /* , requireds */ }) => {
    const dispatch = useDispatch()
 
    const removeFormHandler = (id) => {
@@ -17,11 +17,15 @@ export const QuestionFooter = ({ id, forms }) => {
    }
 
    const requiredQuestion = (id) => {
+      // console.log(e.currentTarget.id)
+      console.log(id)
       dispatch(formActions.requiredQuestion({ id }))
    }
    const markCorrectAnswer = (id) => {
+      console.log(id)
       dispatch(formActions.addAnswer(id))
    }
+
    return (
       <QuestionSection>
          <CorrectAnswer>
@@ -49,11 +53,12 @@ export const QuestionFooter = ({ id, forms }) => {
             <RequiredQuestion>
                <span>Обязательный вопрос</span>
                <RequiredIcon>
-                  <CheckBoxWrapper>
+                  <CheckBoxWrapper id={id}>
                      <CheckBox
                         id="checkbox"
                         type="checkbox"
-                        onChange={() => requiredQuestion(id)}
+                        // checked={requireds}
+                        onClick={() => requiredQuestion(id)}
                      />
                      <CheckBoxLabel htmlFor="checkbox" />
                   </CheckBoxWrapper>

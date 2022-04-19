@@ -45,6 +45,9 @@ export const QuestionForm = () => {
             </div>
          </Container>
          <Questions />
+         <SaveForm>
+            <button type="button">Сохранить</button>
+         </SaveForm>
       </Wrapper>
    )
 }
@@ -111,5 +114,22 @@ const FormDescription = styled.input`
    }
    &::placeholder {
       color: #202124;
+   }
+`
+const SaveForm = styled.div`
+   margin: 0 auto;
+   width: 770px;
+   & button {
+      padding: 7px 19px;
+      font-size: 16px;
+      color: white;
+      border-radius: 5px;
+      background-color: rgb(103, 58, 183);
+      cursor: pointer;
+
+      &:hover {
+         width: 122px;
+         height: 37px;
+      }
    }
 `

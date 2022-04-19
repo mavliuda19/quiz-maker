@@ -1,5 +1,3 @@
-/* eslint-disable no-constant-condition */
-/* eslint-disable react/no-unescaped-entities */
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
@@ -9,10 +7,11 @@ export const QuestionBody = ({ questionType, options, formId }) => {
    const dispatch = useDispatch()
    console.log(questionType)
    const changeOptionValueHandler = (text, formId, id) => {
+      console.log(id)
       dispatch(formActions.changeOptionValue({ text, formId, id }))
    }
 
-   const addQuestionVariantHandler = () => {
+   const addQuestionVariantHandler = (formId) => {
       if (options.length < 5) {
          const data = {
             optionText: `Вариант ${Number(options.length + 1)}`,
@@ -22,11 +21,14 @@ export const QuestionBody = ({ questionType, options, formId }) => {
       }
    }
 
-   const removeOptionHandler = (e, id) => {
-      dispatch(formActions.removeOptionText(id))
+   const removeOptionHandler = (formId, id) => {
+      console.log(formId)
+      console.log(id)
+      dispatch(formActions.removeOptionText({ formId, id }))
    }
    let content
-   if (questionType === 'checkbox') {
+   // eslint-disable-next-line no-constant-condition
+   if (questionType === 'checkbox' || 'radio') {
       content = (
          <>
             {options.map((option) => {
@@ -53,7 +55,7 @@ export const QuestionBody = ({ questionType, options, formId }) => {
                      </>
 
                      <RadioIcon
-                        onClick={(e) => removeOptionHandler(e, option.id)}
+                        onClick={() => removeOptionHandler(formId, option.id)}
                      >
                         <img
                            src="https://www.svgrepo.com/show/389515/x.svg"
@@ -76,16 +78,24 @@ export const QuestionBody = ({ questionType, options, formId }) => {
                   </button>
                   <span>или </span>
                   <div>
-                     <span>Добавить вариант 'Другое'</span>
+                     <span>Добавить вариант &quot;Другое&quot;</span>
                   </div>
                </WrapperQuestion>
             </Container>
          </>
       )
-   } else {
+   }
+   if (questionType === 'text') {
       content = (
          <WrapperText>
             <input placeholder="Краткий ответ" disabled />
+         </WrapperText>
+      )
+   }
+   if (questionType === 'date') {
+      content = (
+         <WrapperText>
+            <input placeholder="Краткий ответ" type={questionType} disabled />
          </WrapperText>
       )
    }
