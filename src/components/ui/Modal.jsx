@@ -4,11 +4,12 @@ import ReactDOM from 'react-dom'
 import { useDispatch } from 'react-redux'
 import { uiSliceActions } from '../../store/slices/uiSlice'
 import { formActions } from '../../store/slices/formSlice'
+import { ReactComponent as TextIcon } from '../../assets/icons/text-line.svg'
 
 const options = [
    {
       id: 'el1',
-      image: 'https://www.svgrepo.com/show/376702/text-line.svg',
+      image: <TextIcon />,
       text: 'Текст (строка)',
       type: 'text',
    },
@@ -51,34 +52,31 @@ const options = [
 ]
 
 function Backdrop({ onConfirm }) {
-   return <StyledBackdrop onClick={onConfirm} />
+   return <BackdropWrapper onClick={onConfirm} />
 }
 
 const ModalOverly = ({ id, getQuestionType }) => {
    const dispatch = useDispatch()
 
-   const addQuestionType = (e, id, type) => {
-      // console.log(e.target.parentElement.parentElement)
-      // if (e.target.parentNode.id === id) {
-      getQuestionType(e.currentTarget.textContent, type)
-      // }
+   const addQuestionType = (id, text, type) => {
+      getQuestionType(text, type)
       dispatch(formActions.changeQuestionType({ id, type }))
    }
 
    return (
-      <StyledContainer>
-         {options.map((el) => (
-            <StyledDiv
-               key={el.id}
-               onClick={(e) => addQuestionType(e, id, el.type)}
+      <Wrapper>
+         {options.map((option) => (
+            <Container
+               key={option.id}
+               onClick={() => addQuestionType(id, option.text, option.type)}
             >
-               <StyledIcon>
-                  <img src={el.image} alt="" />
-               </StyledIcon>
-               <span>{el.text}</span>
-            </StyledDiv>
+               <IconWrapper>
+                  <img src={option.image} alt="" />
+               </IconWrapper>
+               <span>{option.text}</span>
+            </Container>
          ))}
-      </StyledContainer>
+      </Wrapper>
    )
 }
 export const Modal = ({ id, getQuestionType }) => {
@@ -101,14 +99,14 @@ export const Modal = ({ id, getQuestionType }) => {
    )
 }
 
-const StyledBackdrop = styled.div`
+const BackdropWrapper = styled.div`
    position: fixed;
    top: 0;
    left: 0;
    width: 100%;
    height: 100vh;
 `
-const StyledContainer = styled.div`
+const Wrapper = styled.div`
    width: 330px;
    height: 455px;
    border-radius: 4px;
@@ -124,7 +122,7 @@ const StyledContainer = styled.div`
       background-color: lightgray;
    }
 `
-const StyledDiv = styled.div`
+const Container = styled.div`
    width: 325px;
    height: 65px;
    display: flex;
@@ -133,7 +131,7 @@ const StyledDiv = styled.div`
    border-bottom: 1px solid gray;
    cursor: pointer;
 `
-const StyledIcon = styled.div`
+const IconWrapper = styled.div`
    margin: 10px 8px 0 20px;
    & img {
       width: 30px;

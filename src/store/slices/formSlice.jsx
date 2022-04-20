@@ -1,13 +1,13 @@
-/* eslint-disable no-param-reassign */
-import { createSlice, current } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 const initState = {
    questionTile: 'Новая форма',
    questionDescription: '',
+   id: Date.now().toString(),
    forms: [
       {
          questionText: 'Вопрос без заголовка',
-         questionType: '',
+         questionType: 'checkbox',
          options: [{ optionText: 'Вариант 1', id: '1jlk2' }],
          answer: false,
          answerKey: '',
@@ -36,7 +36,7 @@ export const formSlice = createSlice({
             questionText: 'Вопрос без заголовка',
             answer: false,
             answerKey: '',
-            questionType: '',
+            questionType: 'checkbox',
             options: [{ optionText: 'Вариант 1', id: '123' }],
             open: true,
             required: false,
@@ -44,13 +44,16 @@ export const formSlice = createSlice({
          })
       },
       removeQuestionField(state, action) {
-         const { id } = action.payload
-         state.forms = state.forms.filter((form) => form.id !== id)
+         const id = action.payload
+         const filteredQuestionField = state.forms.filter(
+            (form) => form.id !== id
+         )
+         state.forms = filteredQuestionField
       },
       copyQuestionField(state, action) {
-         const { id } = action.payload
+         const id = action.payload
          const copy = state.forms.find((form) => form.id === id)
-         state.forms.push(copy)
+         state.forms.push({ ...copy, id: Date.now().toString() })
       },
       changeQuestionText(state, action) {
          const { title, id } = action.payload
@@ -83,15 +86,12 @@ export const formSlice = createSlice({
       },
       changeOptionValue(state, action) {
          const { text, formId, id } = action.payload
-
          const currentQuestionField = state.forms.find((form) => {
             return form.id === formId
          })
-
          const currentOption = currentQuestionField.options.find(
             (option) => option.id === id
          )
-
          if (currentOption) {
             currentOption.optionText = text
          }
@@ -107,9 +107,8 @@ export const formSlice = createSlice({
       },
 
       requiredQuestion(state, action) {
-         const { id } = action.payload
+         const id = action.payload
          const currentQuestionField = state.forms.find((form) => form.id === id)
-         console.log(current(currentQuestionField))
          if (currentQuestionField) {
             currentQuestionField.required = !currentQuestionField.required
          }

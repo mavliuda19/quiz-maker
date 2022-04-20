@@ -6,21 +6,22 @@ import { uiSliceActions } from '../../store/slices/uiSlice'
 import { Modal } from '../ui/Modal'
 import { QuestionBody } from './QuestionBody'
 import { QuestionFooter } from './QuestionFooter'
+import { Answers } from './Answers'
 
-export const AllQuestions = () => {
+export const Questions = () => {
    const dispatch = useDispatch()
 
    const modalIsVisible = useSelector((state) => state.ui.modalIsVisible)
    const { forms } = useSelector((state) => state.form)
-   const [value, setValue] = useState('checkbox')
-   console.log(forms)
+   const [questionType, setQuestionType] = useState('checkbox')
+
    const changeQuestionText = (title, id) => {
       dispatch(formActions.changeQuestionText({ title, id }))
    }
    const getQuestionType = (value) => {
-      setValue(value)
+      setQuestionType(value)
    }
-   const onClickHandler = () => {
+   const toogleHandler = () => {
       dispatch(uiSliceActions.toogle())
    }
 
@@ -31,8 +32,8 @@ export const AllQuestions = () => {
                !questionForm.answer && (
                   <MainContainer key={questionForm.id}>
                      <>
-                        <QuestionSection>
-                           <TitleQuestion>
+                        <Container>
+                           <TitleWrapper>
                               <input
                                  onChange={(e) =>
                                     changeQuestionText(
@@ -43,18 +44,18 @@ export const AllQuestions = () => {
                                  value={questionForm.questionText}
                                  placeholder="Вопрос"
                               />
-                           </TitleQuestion>
-                           <WrapperSelect onClick={onClickHandler}>
+                           </TitleWrapper>
+                           <SelectWrapper onClick={toogleHandler}>
                               {modalIsVisible && (
                                  <Modal
                                     getQuestionType={getQuestionType}
                                     id={questionForm.id}
                                  />
                               )}
-                              <SelectTitle>{value}</SelectTitle>
-                              <SelectOne> ▾</SelectOne>
-                           </WrapperSelect>
-                        </QuestionSection>
+                              <p>{questionType}</p>
+                              <span> ▾</span>
+                           </SelectWrapper>
+                        </Container>
                         <QuestionBody
                            questionType={questionForm.questionType}
                            options={questionForm.options}
@@ -69,6 +70,7 @@ export const AllQuestions = () => {
                   </MainContainer>
                )
          )}
+         <Answers />
       </div>
    )
 }
@@ -77,18 +79,19 @@ const MainContainer = styled.div`
    background-color: #fff;
    border-radius: 8px;
    width: 770px;
+   margin: 20px auto;
    padding: 25px 25px;
    margin-bottom: 20px;
    flex-direction: column;
    box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%),
       0 1px 3px 0 rgb(0 0 0 / 12%);
 `
-const QuestionSection = styled.div`
+const Container = styled.div`
    display: flex;
    width: 715px;
    justify-content: space-between;
 `
-const TitleQuestion = styled.div`
+const TitleWrapper = styled.div`
    background-color: #f8f9fa;
    display: flex;
    border-bottom: 1px solid gray;
@@ -113,23 +116,22 @@ const TitleQuestion = styled.div`
       }
    }
 `
-const WrapperSelect = styled.div`
+const SelectWrapper = styled.div`
    width: 315px;
    height: 53px;
    border: 1px solid #dadce0;
    border-radius: 4px;
    padding: 10px 15px;
-   margin-right: 0;
    display: flex;
    align-items: center;
    justify-content: space-between;
    cursor: pointer;
-`
-const SelectOne = styled.span`
-   width: 20px;
-   font-size: 30px;
-`
-const SelectTitle = styled.span`
-   width: 200px;
-   text-align: start;
+   & span {
+      width: 20px;
+      font-size: 30px;
+   }
+   & p {
+      width: 200px;
+      text-align: start;
+   }
 `

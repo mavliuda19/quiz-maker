@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 import { formActions } from '../../store/slices/formSlice'
+import { ReactComponent as CheckedIcon } from '../../assets/icons/checkbox-checked.svg'
 
 export const Answers = () => {
    const dispatch = useDispatch()
@@ -18,6 +19,7 @@ export const Answers = () => {
    const onChangeInputValue = (answer, formId) => {
       dispatch(formActions.chooseAnswer({ answer, formId }))
    }
+
    return (
       <Wrapper>
          {forms.map(
@@ -26,13 +28,8 @@ export const Answers = () => {
                   <MainContainer key={questionForm.id}>
                      <>
                         <QuestionSection>
-                           <TitleQuestion>
-                              <img
-                                 src="https://startmeup.careers/wp-content/uploads/2020/09/51387695-f564d000-1b4c-11e9-817d-5e6280f997d0.png"
-                                 alt=""
-                              />
-                              <p>Выберите верные вариaнты:</p>
-                           </TitleQuestion>
+                           <CheckedIcon />
+                           <p>Выберите верные вариaнты:</p>
                         </QuestionSection>
                         <div>
                            <Container>
@@ -54,7 +51,7 @@ export const Answers = () => {
                               </div>
                            </Container>
                            {questionForm.options.map((option) => (
-                              <StyledDiv
+                              <WrapperDiv
                                  key={option.id}
                                  onClick={() => {
                                     chooseCorrectAnswer(
@@ -80,7 +77,7 @@ export const Answers = () => {
                                        }
                                     />
                                  )}
-                              </StyledDiv>
+                              </WrapperDiv>
                            ))}
                         </div>
                         <Footer>
@@ -102,9 +99,8 @@ export const Answers = () => {
 }
 
 const Wrapper = styled.div`
-   margin: 0 auto;
+   margin: 20px auto;
    width: 770px;
-   /* margin-top: 8px; */
 `
 const MainContainer = styled.div`
    background-color: #fff;
@@ -119,35 +115,26 @@ const MainContainer = styled.div`
 const QuestionSection = styled.div`
    display: flex;
    width: 715px;
-   justify-content: space-between;
    border-bottom: 1px solid gray;
    padding-bottom: 20px;
-`
-const TitleQuestion = styled.div`
-   width: 400px;
-   display: flex;
-   & img {
-      width: 25px;
-      margin-right: 10px;
+   align-items: center;
+   & p {
+      margin-left: 10px;
+      font-size: 18px;
    }
-   font-family: 'Google Sans', Roboto, Arial, sans-serif;
-   font-size: 18px;
-   font-weight: 400;
-   line-height: 24px;
-   color: #202124;
 `
+
 const Container = styled.div`
-   padding: 20px 10px;
+   padding: 20px 10px 0px 10px;
    display: flex;
    width: 680px;
    justify-content: space-between;
    cursor: pointer;
-
    & p {
       font-family: 'Google Sans', Roboto, Arial, sans-serif;
       font-size: 16px;
       letter-spacing: 0.1px;
-      color: #202124;
+      color: #1a73e8;
       font-weight: 400;
    }
    & div {
@@ -170,14 +157,10 @@ const Container = styled.div`
       padding: 0;
    }
 `
-const StyledDiv = styled.div`
+const WrapperDiv = styled.div`
    display: flex;
    align-items: center;
-   border-bottom: 1px solid gray;
-   padding-bottom: 20px;
-   & input {
-      /* font-size: 0px; */
-   }
+   height: 40px;
    & p {
       margin-left: 10px;
       font-family: Roboto, Arial, sans-serif;
@@ -185,7 +168,7 @@ const StyledDiv = styled.div`
       font-weight: 400;
       letter-spacing: 0.2px;
       line-height: 20px;
-      color: #202124;
+      color: #102155;
    }
 `
 const Footer = styled.div`
@@ -195,12 +178,13 @@ const Footer = styled.div`
    & button {
       width: 100px;
       color: #1a73e8;
-      height: 33px;
       background-color: white;
       border: 1px #dadce0 solid;
       border-radius: 5px;
       font-size: 17px;
+      font-weight: 600;
       cursor: pointer;
+      padding: 7px;
    }
 `
 const StyledInput = styled.input`
