@@ -1,8 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
-export const Tests = () => {
+export const AllQuize = () => {
    const store = useSelector((state) => state.form)
    return (
       <Wrapper>
@@ -10,7 +11,9 @@ export const Tests = () => {
             <p>{store.questionTile}</p>
          </MainContainer>
          <Container>
-            <button type="button">Пройти тест</button>
+            <NavLink to={`/quizes/${store.id}`}>
+               <button type="button">Пройти тест</button>
+            </NavLink>
          </Container>
       </Wrapper>
    )
