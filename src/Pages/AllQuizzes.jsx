@@ -1,21 +1,32 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
 export const AllQuizzes = () => {
-   const store = useSelector((state) => state.form)
+   const forms = JSON.parse(localStorage.getItem('quizzes')) || []
    return (
-      <Wrapper>
-         <MainContainer>
-            <p>{store.questionTile}</p>
-         </MainContainer>
-         <Container>
-            <NavLink to={`/quizes/${store.id}`}>
-               <button type="button">Пройти тест</button>
-            </NavLink>
-         </Container>
-      </Wrapper>
+      <div>
+         {forms.length === 0 ? (
+            <p>no quizzes</p>
+         ) : (
+            <div>
+               {forms.map((form) => {
+                  return (
+                     <Wrapper key={form.id}>
+                        <MainContainer>
+                           <p>{form.questionTitle}</p>
+                        </MainContainer>
+                        <Container>
+                           <NavLink to={`/quizes/${form.id}`}>
+                              <button type="button">Пройти тест</button>
+                           </NavLink>
+                        </Container>
+                     </Wrapper>
+                  )
+               })}
+            </div>
+         )}
+      </div>
    )
 }
 

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initState = {
-   questionTile: 'Новая форма',
+   questionTitle: 'Новая форма',
    questionDescription: '',
    id: Date.now().toString(),
    score: 0,
@@ -27,7 +27,7 @@ export const formSlice = createSlice({
    reducers: {
       changeQuestionTitle(state, action) {
          const title = action.payload
-         state.questionTile = title
+         state.questionTitle = title
       },
       changeQuestionDescription(state, action) {
          const description = action.payload

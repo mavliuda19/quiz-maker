@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { formActions } from '../../store/slices/formSlice'
 import { ReactComponent as CheckIcon } from '../../assets/icons/check.svg'
@@ -8,9 +8,12 @@ import { ReactComponent as TrashIcon } from '../../assets/icons/trash.svg'
 
 export const QuestionFooter = ({ id }) => {
    const dispatch = useDispatch()
+   const { forms } = useSelector((state) => state.form)
 
    const removeFormHandler = (id) => {
-      dispatch(formActions.removeQuestionField(id))
+      if (forms.length > 1) {
+         dispatch(formActions.removeQuestionField(id))
+      }
    }
    const copyQuestionHandler = (id) => {
       dispatch(formActions.copyQuestionField(id))
