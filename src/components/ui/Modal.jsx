@@ -5,49 +5,57 @@ import { useDispatch } from 'react-redux'
 import { uiSliceActions } from '../../store/slices/uiSlice'
 import { formActions } from '../../store/slices/formSlice'
 import { ReactComponent as TextIcon } from '../../assets/icons/text-line.svg'
+import {
+   CHECKBOX,
+   DATE,
+   EMAIL,
+   NUMBER,
+   RADIO,
+   TEXT,
+} from '../../utils/constants'
 
 const options = [
    {
       id: 'el1',
       image: <TextIcon />,
       text: 'Текст (строка)',
-      type: 'text',
+      type: TEXT,
    },
    {
       id: 'el2',
       image: 'https://www.svgrepo.com/show/371212/dot-circle.svg',
       text: 'Один из списка',
-      type: 'radio',
+      type: RADIO,
    },
    {
       id: 'el3',
       image: 'https://www.svgrepo.com/show/343021/checkbox-checked.svg',
       text: 'Несколько из списка',
-      type: 'checkbox',
+      type: CHECKBOX,
    },
    {
       id: 'el4',
       image: 'https://img.icons8.com/ios/344/badge.png',
       text: 'Ф.И.О',
-      type: 'text',
+      type: TEXT,
    },
    {
       id: 'el5',
       image: 'https://img.icons8.com/dotty/344/number-pad.png',
       text: 'Номер телефона',
-      type: 'tel',
+      type: NUMBER,
    },
    {
       id: 'el6',
       image: 'https://www.svgrepo.com/show/18341/email.svg',
       text: 'Email address',
-      type: 'email',
+      type: EMAIL,
    },
    {
       id: 'el7',
       image: 'https://www.svgrepo.com/show/153315/date.svg',
       text: 'Дата',
-      type: 'date',
+      type: DATE,
    },
 ]
 
@@ -55,12 +63,11 @@ function Backdrop({ onConfirm }) {
    return <BackdropWrapper onClick={onConfirm} />
 }
 
-const ModalOverly = ({ id, getQuestionType }) => {
+const ModalOverly = ({ id }) => {
    const dispatch = useDispatch()
 
    const addQuestionType = (id, text, type) => {
-      getQuestionType(text, type)
-      dispatch(formActions.changeQuestionType({ id, type }))
+      dispatch(formActions.changeQuestionType({ id, type, text }))
    }
 
    return (
@@ -79,7 +86,7 @@ const ModalOverly = ({ id, getQuestionType }) => {
       </Wrapper>
    )
 }
-export const Modal = ({ id, getQuestionType }) => {
+export const Modal = ({ id }) => {
    const dispatch = useDispatch()
 
    const cancelHandler = () => {
@@ -92,7 +99,7 @@ export const Modal = ({ id, getQuestionType }) => {
             document.getElementById('backdrop')
          )}
          {ReactDOM.createPortal(
-            <ModalOverly getQuestionType={getQuestionType} id={id} />,
+            <ModalOverly id={id} />,
             document.getElementById('modal-root')
          )}
       </>

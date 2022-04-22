@@ -5,7 +5,7 @@ import { ReactComponent as FormIcon } from '../assets/icons/document.svg'
 import { ReactComponent as EyeIcon } from '../assets/icons/eye.svg'
 import { ReactComponent as Avatar } from '../assets/icons/avatar.svg'
 import { formActions } from '../store/slices/formSlice'
-import { NavBar } from '../components/NavBar'
+import { NavBar } from './NavBar'
 
 export const Header = () => {
    const dispatch = useDispatch()

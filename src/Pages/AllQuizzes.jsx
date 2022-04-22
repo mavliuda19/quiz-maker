@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
-export const AllQuize = () => {
+export const AllQuizzes = () => {
    const store = useSelector((state) => state.form)
    return (
       <Wrapper>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { formActions } from '../../store/slices/formSlice'
@@ -13,14 +13,11 @@ export const Questions = () => {
 
    const modalIsVisible = useSelector((state) => state.ui.modalIsVisible)
    const { forms } = useSelector((state) => state.form)
-   const [questionType, setQuestionType] = useState('checkbox')
 
    const changeQuestionText = (title, id) => {
       dispatch(formActions.changeQuestionText({ title, id }))
    }
-   const getQuestionType = (value) => {
-      setQuestionType(value)
-   }
+
    const toogleHandler = () => {
       dispatch(uiSliceActions.toogle())
    }
@@ -46,13 +43,8 @@ export const Questions = () => {
                               />
                            </TitleWrapper>
                            <SelectWrapper onClick={toogleHandler}>
-                              {modalIsVisible && (
-                                 <Modal
-                                    getQuestionType={getQuestionType}
-                                    id={questionForm.id}
-                                 />
-                              )}
-                              <p>{questionType}</p>
+                              {modalIsVisible && <Modal id={questionForm.id} />}
+                              <p>{questionForm.selectedType}</p>
                               <span> ▾</span>
                            </SelectWrapper>
                         </Container>
