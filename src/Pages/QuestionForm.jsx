@@ -17,43 +17,46 @@ export const QuestionForm = () => {
       dispatch(formActions.changeQuestionDescription(description))
    }
    const saveQuestionsHandler = () => {
-      localStorage.setItem('quizzes', JSON.stringify(question))
+      let data = []
+      if (localStorage.getItem('quizzes'))
+         data = JSON.parse(localStorage.getItem('quizzes'))
+      data.push(question)
+      localStorage.setItem('quizzes', JSON.stringify([...data, data]))
    }
    return (
-      <>
-         <Wrapper>
-            <br />
-            <Container>
-               <div>
-                  <StyledForm>
-                     <div>
-                        <TitleWrapper
-                           placeholder="Новая форма"
-                           onChange={(e) =>
-                              onChangeQuestionTitleHandler(e.target.value)
-                           }
-                           value={question.questionTile}
-                        />
-                        <span />
-                        <DescriptionWrapper
-                           placeholder="Описание"
-                           onChange={(e) =>
-                              onChangeQuestionDescriptionHandler(e.target.value)
-                           }
-                        />
-                     </div>
-                  </StyledForm>
-               </div>
-            </Container>
-            <Questions />
-            <SaveForm>
-               <button type="button" onClick={saveQuestionsHandler}>
-                  Сохранить
-               </button>
-            </SaveForm>
-         </Wrapper>
+      <Wrapper>
+         <br />
+         <Container>
+            <div>
+               <StyledForm>
+                  <div>
+                     <TitleWrapper
+                        placeholder="Новая форма"
+                        onChange={(e) =>
+                           onChangeQuestionTitleHandler(e.target.value)
+                        }
+                        value={question.questionTile}
+                     />
+                     <span />
+                     <DescriptionWrapper
+                        placeholder="Описание"
+                        onChange={(e) =>
+                           onChangeQuestionDescriptionHandler(e.target.value)
+                        }
+                     />
+                  </div>
+               </StyledForm>
+            </div>
+         </Container>
+
+         <Questions />
+         <SaveForm>
+            <button type="button" onClick={saveQuestionsHandler}>
+               Сохранить
+            </button>
+         </SaveForm>
          <Toolbar />
-      </>
+      </Wrapper>
    )
 }
 

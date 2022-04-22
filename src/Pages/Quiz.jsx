@@ -1,22 +1,32 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { Quizzes } from '../components/Quizzes/Quizzes'
 
 export const Quiz = () => {
+   const form = useSelector((state) => state.form)
    return (
       <>
          <Wrapper>
             <div>
-               <h1>title</h1>
-               <p>dexcription</p>
+               <h1>{form.questionTitle}</h1>
+               <p>{form.questionDescription}</p>
             </div>
          </Wrapper>
-         <Container>
-            <div>Question Title</div>
-            <div>
-               <input />
-               <p>option</p>
-            </div>
-         </Container>
+         {form.forms.map((form) => {
+            return (
+               <div key={form.id}>
+                  <Container>
+                     <TextWrapper>{form.questionText}</TextWrapper>
+                     <Quizzes
+                        options={form.options}
+                        questionType={form.questionType}
+                     />
+                  </Container>
+               </div>
+            )
+         })}
+
          <ButtonWrapper>
             <button type="button">Следующий вопрос</button>
          </ButtonWrapper>
@@ -27,7 +37,6 @@ export const Quiz = () => {
 const Wrapper = styled.div`
    width: 770px;
    margin: 30px auto;
-   display: flex;
    background-color: white;
    border-radius: 8px;
    & div {
@@ -47,11 +56,15 @@ const Wrapper = styled.div`
    }
 `
 const Container = styled.div`
-   width: 770px;
-   margin: 30px auto;
-   background-color: white;
    border-radius: 8px;
    padding: 20px;
+   width: 770px;
+   margin: 30px auto;
+   margin-top: 20px;
+   background-color: white;
+   display: flex;
+   flex-direction: column;
+   color: #202124;
 `
 const ButtonWrapper = styled.div`
    width: 770px;
@@ -66,4 +79,7 @@ const ButtonWrapper = styled.div`
       background-color: rgb(103, 58, 183);
       cursor: pointer;
    }
+`
+const TextWrapper = styled.p`
+   font-size: 20px;
 `
