@@ -4,6 +4,7 @@ const initState = {
    questionTile: 'Новая форма',
    questionDescription: '',
    id: Date.now().toString(),
+   score: 0,
    forms: [
       {
          questionText: 'Вопрос без заголовка',
@@ -15,6 +16,7 @@ const initState = {
          open: true,
          required: false,
          id: '3l122',
+         selectedType: 'Несколько из списка',
       },
    ],
 }
@@ -41,6 +43,7 @@ export const formSlice = createSlice({
             open: true,
             required: false,
             id: action.payload.id,
+            selectedType: 'Несколько из списка',
          })
       },
       removeQuestionField(state, action) {
@@ -52,8 +55,11 @@ export const formSlice = createSlice({
       },
       copyQuestionField(state, action) {
          const id = action.payload
-         const copy = state.forms.find((form) => form.id === id)
-         state.forms.push({ ...copy, id: Date.now().toString() })
+         const currentQuestionField = state.forms.find((form) => form.id === id)
+         state.forms.push({
+            ...currentQuestionField,
+            id: Date.now().toString(),
+         })
       },
       changeQuestionText(state, action) {
          const { title, id } = action.payload
@@ -97,12 +103,14 @@ export const formSlice = createSlice({
          }
       },
       changeQuestionType(state, action) {
-         const { id, type } = action.payload
+         const { id, type, text } = action.payload
          const questionsType = state.forms.find((form) => form.id === id)
          if (questionsType) {
             questionsType.questionType = type
+            questionsType.selectedType = text
          } else {
             questionsType.questionType = 'text'
+            questionsType.selectedType = 'Несколько из списка'
          }
       },
 
@@ -127,7 +135,7 @@ export const formSlice = createSlice({
             currentQuestionField.answer = false
          }
       },
-      chooseAnswer(state, action) {
+      chooseCorrectAnswer(state, action) {
          const { formId, answer } = action.payload
          const currentQuestionField = state.forms.find(
             (form) => form.id === formId

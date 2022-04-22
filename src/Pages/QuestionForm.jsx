@@ -9,7 +9,7 @@ export const QuestionForm = () => {
    const dispatch = useDispatch()
 
    const question = useSelector((state) => state.form)
-   console.log(question)
+
    const onChangeQuestionTitleHandler = (title) => {
       dispatch(formActions.changeQuestionTitle(title))
    }
@@ -17,7 +17,7 @@ export const QuestionForm = () => {
       dispatch(formActions.changeQuestionDescription(description))
    }
    const saveQuestionsHandler = () => {
-      localStorage.setItem('quizes', question)
+      localStorage.setItem('quizzes', JSON.stringify(question))
    }
    return (
       <>

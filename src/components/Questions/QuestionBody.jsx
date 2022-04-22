@@ -1,7 +1,17 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { formActions } from '../../store/slices/formSlice'
+import {
+   CHECKBOX,
+   DATE,
+   EMAIL,
+   NUMBER,
+   RADIO,
+   TEXT,
+} from '../../utils/constants'
 
 export const QuestionBody = ({ questionType, options, formId }) => {
    const dispatch = useDispatch()
@@ -10,7 +20,7 @@ export const QuestionBody = ({ questionType, options, formId }) => {
       dispatch(formActions.changeOptionValue({ text, formId, id }))
    }
 
-   const addQuestionVariantHandler = (formId) => {
+   const addQuestionOptionHandler = (formId) => {
       if (options.length < 5) {
          const data = {
             optionText: `Вариант ${Number(options.length + 1)}`,
@@ -27,14 +37,14 @@ export const QuestionBody = ({ questionType, options, formId }) => {
    let content
 
    switch (questionType) {
-      case 'text':
+      case TEXT:
          content = (
             <WrapperText>
                <input placeholder="Краткий ответ" disabled />
             </WrapperText>
          )
          break
-      case 'date':
+      case DATE:
          content = (
             <WrapperText>
                <input
@@ -45,8 +55,8 @@ export const QuestionBody = ({ questionType, options, formId }) => {
             </WrapperText>
          )
          break
-      case 'radio':
-      case 'checkbox':
+      case RADIO:
+      case CHECKBOX:
          content = (
             <>
                {options.map((option) => {
@@ -93,7 +103,7 @@ export const QuestionBody = ({ questionType, options, formId }) => {
                   <OptionWrapper>
                      <button
                         type="button"
-                        onClick={() => addQuestionVariantHandler(formId)}
+                        onClick={() => addQuestionOptionHandler(formId)}
                      >
                         <input type="text" placeholder="Добавить вариант" />
                      </button>
@@ -106,18 +116,19 @@ export const QuestionBody = ({ questionType, options, formId }) => {
             </>
          )
          break
-      case 'email':
+      case EMAIL:
          content = (
             <WrapperText>
                <input
                   placeholder="Краткий ответ"
                   type={questionType}
                   disabled
+                  required
                />
             </WrapperText>
          )
          break
-      case 'tel':
+      case NUMBER:
          content = (
             <WrapperText>
                <input placeholder="Краткий ответ" type="number" disabled />

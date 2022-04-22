@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export const Quize = () => {
+export const Quiz = () => {
    return (
       <>
          <Wrapper>
@@ -17,6 +17,9 @@ export const Quize = () => {
                <p>option</p>
             </div>
          </Container>
+         <ButtonWrapper>
+            <button type="button">Следующий вопрос</button>
+         </ButtonWrapper>
       </>
    )
 }
@@ -49,4 +52,18 @@ const Container = styled.div`
    background-color: white;
    border-radius: 8px;
    padding: 20px;
+`
+const ButtonWrapper = styled.div`
+   width: 770px;
+   margin: 0 auto;
+   display: flex;
+   justify-content: end;
+   & button {
+      padding: 7px 19px;
+      font-size: 16px;
+      color: white;
+      border-radius: 5px;
+      background-color: rgb(103, 58, 183);
+      cursor: pointer;
+   }
 `
