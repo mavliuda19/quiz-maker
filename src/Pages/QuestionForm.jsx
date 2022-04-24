@@ -16,13 +16,7 @@ export const QuestionForm = () => {
    const onChangeQuestionDescriptionHandler = (description) => {
       dispatch(formActions.changeQuestionDescription(description))
    }
-   const saveQuestionsHandler = () => {
-      let data = []
-      if (localStorage.getItem('quizzes'))
-         data = JSON.parse(localStorage.getItem('quizzes'))
-      data.push(question)
-      localStorage.setItem('quizzes', JSON.stringify([...data, data]))
-   }
+
    return (
       <Wrapper>
          <br />
@@ -48,13 +42,7 @@ export const QuestionForm = () => {
                </StyledForm>
             </div>
          </Container>
-
          <Questions />
-         <SaveForm>
-            <button type="button" onClick={saveQuestionsHandler}>
-               Сохранить
-            </button>
-         </SaveForm>
          <Toolbar />
       </Wrapper>
    )
@@ -66,14 +54,14 @@ const Wrapper = styled.div`
 `
 const Container = styled.div`
    margin: auto;
-   width: 50%;
+   width: 770px;
    box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%),
       0 1px 3px 0 rgb(0 0 0 / 12%);
 `
 const StyledForm = styled.div`
    display: flex;
    background-color: white;
-   border-top: 8px solid rgb(103, 58, 183);
+   border-top: 9px solid rgb(103, 58, 183);
    border-radius: 8px;
    text-transform: capitalize;
    & div {
@@ -117,22 +105,5 @@ const DescriptionWrapper = styled.input`
    }
    &::placeholder {
       color: #202124;
-   }
-`
-const SaveForm = styled.div`
-   margin: 0 auto;
-   width: 770px;
-   & button {
-      padding: 7px 19px;
-      font-size: 16px;
-      color: white;
-      border-radius: 5px;
-      background-color: rgb(103, 58, 183);
-      cursor: pointer;
-
-      &:hover {
-         width: 122px;
-         height: 37px;
-      }
    }
 `

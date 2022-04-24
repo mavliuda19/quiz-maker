@@ -1,24 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initState = {
+const initState = JSON.parse(localStorage.getItem('quizzes')) || {
    questionTitle: 'Новая форма',
    questionDescription: '',
    id: Date.now().toString(),
    score: 0,
-   forms: [
-      {
-         questionText: 'Вопрос без заголовка',
-         questionType: 'checkbox',
-         options: [{ optionText: 'Вариант 1', id: '1jlk2' }],
-         answer: false,
-         answerKey: '',
-         points: 0,
-         open: true,
-         required: false,
-         id: '3l122',
-         selectedType: 'Несколько из списка',
-      },
-   ],
+   question: [],
+   forms: [],
 }
 
 export const formSlice = createSlice({
@@ -36,14 +24,13 @@ export const formSlice = createSlice({
       addQuestionField(state, action) {
          state.forms.push({
             questionText: 'Вопрос без заголовка',
-            answer: false,
-            answerKey: '',
             questionType: 'checkbox',
             options: [{ optionText: 'Вариант 1', id: '123' }],
-            open: true,
+            selectedType: 'Несколько из списка',
+            answer: false,
+            correctAnswer: [],
             required: false,
             id: action.payload.id,
-            selectedType: 'Несколько из списка',
          })
       },
       removeQuestionField(state, action) {
@@ -121,27 +108,13 @@ export const formSlice = createSlice({
             currentQuestionField.required = !currentQuestionField.required
          }
       },
-      addAnswer(state, action) {
-         const id = action.payload
-         const currentQuestionField = state.forms.find((form) => form.id === id)
-         if (currentQuestionField) {
-            currentQuestionField.answer = !currentQuestionField.answer
-         }
-      },
-      doneAnswer(state, action) {
-         const id = action.payload
-         const currentQuestionField = state.forms.find((form) => form.id === id)
-         if (currentQuestionField) {
-            currentQuestionField.answer = false
-         }
-      },
       chooseCorrectAnswer(state, action) {
          const { formId, answer } = action.payload
          const currentQuestionField = state.forms.find(
             (form) => form.id === formId
          )
          if (currentQuestionField) {
-            currentQuestionField.answerKey = answer
+            currentQuestionField.correctAnswer.push(answer)
          }
       },
       addPoint(state, action) {
@@ -152,6 +125,22 @@ export const formSlice = createSlice({
          if (currentQuestionField) {
             currentQuestionField.points = point
          }
+      },
+      clearForm(state) {
+         state.question = {
+            title: state.questionTitle,
+            description: state.questionDescription,
+            id: state.id,
+            score: state.score,
+            questions: [...state.forms],
+         }
+         state.forms = []
+         state.questionTitle = 'Новая форма'
+         state.questionDescription = ''
+         state.score = 0
+      },
+      checkAnswer(state) {
+         state.question.score += 1
       },
    },
 })

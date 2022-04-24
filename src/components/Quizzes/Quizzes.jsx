@@ -1,5 +1,7 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
+import { formActions } from '../../store/slices/formSlice'
 import {
    CHECKBOX,
    DATE,
@@ -9,13 +11,24 @@ import {
    TEXT,
 } from '../../utils/constants'
 
-export const Quizzes = ({ options, questionType }) => {
+export const Quizzes = ({ options, questionType, formId, correctAnswer }) => {
+   const dispatch = useDispatch()
+
+   const checkAnswer = (answer) => {
+      correctAnswer.map((correct) => {
+         if (correct === answer) {
+            dispatch(formActions.checkAnswer())
+         }
+         return true
+      })
+   }
+
    let content
    switch (questionType) {
       case TEXT:
          content = (
             <WrapperText>
-               <input placeholder="Мой ответ" />
+               <input type="text" required placeholder="Мой ответ" />
             </WrapperText>
          )
          break
@@ -33,10 +46,20 @@ export const Quizzes = ({ options, questionType }) => {
                {options.map((option) => {
                   return (
                      <Container key={option.id}>
-                        <div>
-                           <input type={questionType} />
-                           <p>{option.optionText}</p>
-                        </div>
+                        <span>
+                           <input
+                              type={questionType}
+                              value={option.optionText}
+                              name="answer"
+                              id={option.id}
+                              onChange={(e) =>
+                                 checkAnswer(e.target.value, formId)
+                              }
+                           />
+                           <label htmlFor={option.id}>
+                              {option.optionText}
+                           </label>
+                        </span>
                      </Container>
                   )
                })}
@@ -57,7 +80,7 @@ export const Quizzes = ({ options, questionType }) => {
       case NUMBER:
          content = (
             <WrapperText>
-               <input placeholder="Мой ответ" type="number" />
+               <input placeholder="Мой ответ" />
             </WrapperText>
          )
          break
@@ -67,24 +90,24 @@ export const Quizzes = ({ options, questionType }) => {
 }
 
 const Wrapper = styled.div`
-   width: 770px;
+   width: 710px;
    margin: 30px auto;
 `
-const Container = styled.span`
-   & div {
+const Container = styled.div`
+   & span {
+      width: 660px;
+      padding: 8px;
       display: flex;
       align-items: center;
-      height: 30px;
       margin-bottom: 20px;
-      & p {
+      margin-left: 10px;
+      border-radius: 6px;
+      & label {
          margin-left: 15px;
-         font-family: Roboto, Arial, sans-serif;
-         font-size: 17px;
-         font-weight: 400;
-         letter-spacing: 0.2px;
-         line-height: 20px;
+         font-size: 18px;
          color: #202124;
-         min-width: 0;
+      }
+      & input {
       }
    }
 `
