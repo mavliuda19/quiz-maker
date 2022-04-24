@@ -2,7 +2,6 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { formActions } from '../../store/slices/formSlice'
-import { ReactComponent as CheckIcon } from '../../assets/icons/check.svg'
 import { ReactComponent as CopyIcon } from '../../assets/icons/copyy.svg'
 import { ReactComponent as TrashIcon } from '../../assets/icons/trash.svg'
 
@@ -22,18 +21,9 @@ export const QuestionFooter = ({ id }) => {
    const requiredQuestion = (id) => {
       dispatch(formActions.requiredQuestion(id))
    }
-   const markCorrectAnswer = (id) => {
-      dispatch(formActions.addAnswer(id))
-   }
 
    return (
       <Wrapper>
-         <Container>
-            <CheckIcon />
-            <button type="button" onClick={() => markCorrectAnswer(id)}>
-               <p>Ответы</p>
-            </button>
-         </Container>
          <DivContainer>
             <IconWrapper onClick={() => copyQuestionHandler(id)}>
                <CopyIcon />
@@ -59,7 +49,7 @@ export const QuestionFooter = ({ id }) => {
 
 const Wrapper = styled.div`
    display: flex;
-   justify-content: space-between;
+   justify-content: end;
    padding-top: 20px;
    align-items: center;
 `
@@ -76,28 +66,8 @@ const RequiredQuestion = styled.div`
 `
 const DivContainer = styled.div`
    display: flex;
-   width: 380px;
-   justify-content: space-between;
 `
-const Container = styled.div`
-   width: 300px;
-   display: flex;
-   padding-top: 5px;
-   & button {
-      margin-left: 10px;
-      display: flex;
-      align-items: center;
-      color: blue;
-      font-size: 17px;
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-   }
-   & img {
-      width: 20px;
-      margin-right: 8px;
-   }
-`
+
 const IconWrapper = styled.div`
    width: 27px;
    display: flex;

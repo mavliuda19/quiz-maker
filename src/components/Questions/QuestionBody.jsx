@@ -31,6 +31,9 @@ export const QuestionBody = ({ questionType, options, formId }) => {
    const removeOptionHandler = (formId, id) => {
       dispatch(formActions.removeOptionText({ formId, id }))
    }
+   const selectCorrectAnswer = (answer, formId) => {
+      dispatch(formActions.chooseCorrectAnswer({ answer, formId }))
+   }
 
    let content
 
@@ -62,7 +65,14 @@ export const QuestionBody = ({ questionType, options, formId }) => {
                      <Wrapper key={option.id}>
                         <>
                            <IconWrapper>
-                              <input type={questionType} />
+                              <input
+                                 value={option.optionText}
+                                 type={questionType}
+                                 name="quiz"
+                                 onChange={(e) =>
+                                    selectCorrectAnswer(e.target.value, formId)
+                                 }
+                              />
                            </IconWrapper>
                            <TextWrapper>
                               <input
@@ -103,12 +113,8 @@ export const QuestionBody = ({ questionType, options, formId }) => {
                         type="button"
                         onClick={() => addQuestionOptionHandler(formId)}
                      >
-                        <input type="text" placeholder="Добавить вариант" />
+                        Добавить вариант
                      </button>
-                     <span>или </span>
-                     <div>
-                        <span>Добавить вариант &quot;Другое&quot;</span>
-                     </div>
                   </OptionWrapper>
                </Container>
             </>
@@ -199,6 +205,13 @@ const OptionWrapper = styled.div`
    & button {
       border: none;
       outline: none;
+      background: none;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      margin: 5px 15px 0 0;
+      font-size: 16px;
+      cursor: pointer;
    }
 `
 const WrapperText = styled.div`

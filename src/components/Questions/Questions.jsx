@@ -6,7 +6,6 @@ import { uiSliceActions } from '../../store/slices/uiSlice'
 import { Modal } from '../ui/Modal'
 import { QuestionBody } from './QuestionBody'
 import { QuestionFooter } from './QuestionFooter'
-import { Answers } from './Answers'
 
 export const Questions = () => {
    const dispatch = useDispatch()
@@ -24,45 +23,38 @@ export const Questions = () => {
 
    return (
       <div>
-         {forms.map(
-            (questionForm) =>
-               !questionForm.answer && (
-                  <MainContainer key={questionForm.id}>
-                     <>
-                        <Container>
-                           <TitleWrapper>
-                              <input
-                                 onChange={(e) =>
-                                    changeQuestionText(
-                                       e.target.value,
-                                       questionForm.id
-                                    )
-                                 }
-                                 value={questionForm.questionText}
-                                 placeholder="Вопрос"
-                              />
-                           </TitleWrapper>
-                           <SelectWrapper onClick={toogleHandler}>
-                              {modalIsVisible && <Modal id={questionForm.id} />}
-                              <p>{questionForm.selectedType}</p>
-                              <span> ▾</span>
-                           </SelectWrapper>
-                        </Container>
-                        <QuestionBody
-                           questionType={questionForm.questionType}
-                           options={questionForm.options}
-                           formId={questionForm.id}
+         {forms.map((form) => (
+            <MainContainer key={form.id}>
+               <>
+                  <Container>
+                     <TitleWrapper>
+                        <input
+                           onChange={(e) =>
+                              changeQuestionText(e.target.value, form.id)
+                           }
+                           value={form.questionText}
+                           placeholder="Вопрос"
                         />
-                        <QuestionFooter
-                           id={questionForm.id}
-                           forms={forms}
-                           requireds={questionForm.required}
-                        />
-                     </>
-                  </MainContainer>
-               )
-         )}
-         <Answers />
+                     </TitleWrapper>
+                     <SelectWrapper onClick={toogleHandler}>
+                        {modalIsVisible && <Modal id={form.id} />}
+                        <p>{form.selectedType}</p>
+                        <span> ▾</span>
+                     </SelectWrapper>
+                  </Container>
+                  <QuestionBody
+                     questionType={form.questionType}
+                     options={form.options}
+                     formId={form.id}
+                  />
+                  <QuestionFooter
+                     id={form.id}
+                     forms={forms}
+                     requireds={form.required}
+                  />
+               </>
+            </MainContainer>
+         ))}
       </div>
    )
 }
@@ -71,6 +63,7 @@ const MainContainer = styled.div`
    background-color: #fff;
    border-radius: 8px;
    width: 770px;
+   border: 1px solid #cfcfcf;
    margin: 20px auto;
    padding: 25px 25px;
    margin-bottom: 20px;

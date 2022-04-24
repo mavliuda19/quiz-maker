@@ -1,30 +1,31 @@
-import React from 'react'
+import React, { useEffect /* , useState */ } from 'react'
+import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
 export const AllQuizzes = () => {
-   const forms = JSON.parse(localStorage.getItem('quizzes')) || []
+   const form = useSelector((state) => state.form)
+   const question = useSelector((state) => state.form.question)
+
+   useEffect(() => {
+      localStorage.setItem('quizzes', JSON.stringify(form))
+   }, [form])
+
    return (
       <div>
-         {forms.length === 0 ? (
-            <p>no quizzes</p>
+         {question.length === 0 ? (
+            <TextWrapper>No questions have been added yet</TextWrapper>
          ) : (
-            <div>
-               {forms.map((form) => {
-                  return (
-                     <Wrapper key={form.id}>
-                        <MainContainer>
-                           <p>{form.questionTitle}</p>
-                        </MainContainer>
-                        <Container>
-                           <NavLink to={`/quizes/${form.id}`}>
-                              <button type="button">Пройти тест</button>
-                           </NavLink>
-                        </Container>
-                     </Wrapper>
-                  )
-               })}
-            </div>
+            <Wrapper>
+               <MainContainer>
+                  <p>{question.title}</p>
+               </MainContainer>
+               <Container>
+                  <NavLink to={`/quizes/${question.id}`}>
+                     <button type="button">Пройти тест</button>
+                  </NavLink>
+               </Container>
+            </Wrapper>
          )}
       </div>
    )
@@ -33,7 +34,8 @@ export const AllQuizzes = () => {
 const Wrapper = styled.div`
    margin: 2rem auto;
    background-color: #fff;
-   border-radius: 8px;
+   border-radius: 7px;
+   border-top: 9px solid rgb(103, 58, 183);
    width: 770px;
    padding: 25px 25px;
    margin-bottom: 20px;
@@ -47,7 +49,9 @@ const MainContainer = styled.div`
    justify-content: space-between;
    padding-left: 10px;
    & p {
-      font-size: 20px;
+      font-size: 22px;
+      color: #202124;
+      font-weight: 500;
    }
 `
 const Container = styled.div`
@@ -65,4 +69,10 @@ const Container = styled.div`
          height: 37px;
       }
    }
+`
+const TextWrapper = styled.p`
+   text-align: center;
+   margin-top: 100px;
+   font-size: 24px;
+   color: red;
 `

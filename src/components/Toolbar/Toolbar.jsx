@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { formActions } from '../../store/slices/formSlice'
 import { ReactComponent as PlusIcon } from '../../assets/icons/plus.svg'
@@ -10,7 +10,6 @@ import { ReactComponent as ImageIcon } from '../../assets/icons/image.svg'
 
 export const Toolbar = () => {
    const dispatch = useDispatch()
-   const { forms } = useSelector((state) => state.form)
 
    const addFormhandler = () => {
       dispatch(
@@ -21,33 +20,23 @@ export const Toolbar = () => {
    }
 
    return (
-      <>
-         {forms.map((form) => {
-            return (
-               <div key={form.id}>
-                  {!form.answer && (
-                     <Wrapper key={form.id}>
-                        <Container onClick={() => addFormhandler()}>
-                           <PlusIcon />
-                        </Container>
-                        <Container>
-                           <ImportIcon />
-                        </Container>
-                        <Container>
-                           <TextIcon />
-                        </Container>
-                        <Container>
-                           <VideoIcon />
-                        </Container>
-                        <Container>
-                           <ImageIcon />
-                        </Container>
-                     </Wrapper>
-                  )}
-               </div>
-            )
-         })}
-      </>
+      <Wrapper>
+         <Container onClick={() => addFormhandler()}>
+            <PlusIcon />
+         </Container>
+         <Container>
+            <ImportIcon />
+         </Container>
+         <Container>
+            <TextIcon />
+         </Container>
+         <Container>
+            <VideoIcon />
+         </Container>
+         <Container>
+            <ImageIcon />
+         </Container>
+      </Wrapper>
    )
 }
 

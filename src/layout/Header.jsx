@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { ReactComponent as FormIcon } from '../assets/icons/document.svg'
 import { ReactComponent as EyeIcon } from '../assets/icons/eye.svg'
@@ -9,10 +10,16 @@ import { NavBar } from './NavBar'
 
 export const Header = () => {
    const dispatch = useDispatch()
+   const navigate = useNavigate()
    const question = useSelector((state) => state.form)
 
    const onChangeQuestionTitleHandler = (title) => {
       dispatch(formActions.changeQuestionTitle(title))
+   }
+
+   const saveQuestionsHandler = () => {
+      dispatch(formActions.clearForm())
+      return navigate('/tests')
    }
    return (
       <>
@@ -27,7 +34,9 @@ export const Header = () => {
             </Wrapper>
             <Container>
                <EyeIcon />
-               <button type="submit">Отправить</button>
+               <button type="button" onClick={saveQuestionsHandler}>
+                  Сохранить
+               </button>
                <Avatar />
             </Container>
          </HeaderWrapper>
@@ -84,9 +93,22 @@ const Container = styled.div`
       font-size: 16px;
       padding: 5px 13px;
       cursor: pointer;
+      /* transition: 0.3s; */
       &:hover {
-         width: 122px;
-         height: 37px;
+         animation: pulse 1s infinite;
+         transition: 0.8s;
+         box-shadow: 0 0 10px 0 #cfa5e0 inset, 0 0 20px 2px #ce82ef;
+      }
+   }
+   @keyframes pulse {
+      10% {
+         transform: scale(1);
+      }
+      60% {
+         transform: scale(0.9);
+      }
+      100% {
+         transform: scale(1);
       }
    }
 `
