@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { formActions } from '../../store/slices/formSlice'
+import { ReactComponent as RemoveIcon } from '../../assets/icons/x.svg'
 import {
    CHECKBOX,
    DATE,
@@ -96,10 +97,7 @@ export const QuestionBody = ({ questionType, options, formId }) => {
                               removeOptionHandler(formId, option.id)
                            }
                         >
-                           <img
-                              src="https://www.svgrepo.com/show/389515/x.svg"
-                              alt=""
-                           />
+                           <RemoveIcon />
                         </IconWrapper>
                      </Wrapper>
                   )

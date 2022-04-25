@@ -1,18 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 import ReactDOM from 'react-dom'
+import { useNavigate } from 'react-router-dom'
 
-function Backdrop({ onConfirm }) {
-   return <BackdropWrapper onClick={onConfirm} />
+function Backdrop() {
+   return <BackdropWrapper />
 }
 
-const ModalOverly = ({ onConfirm, title, message, result }) => {
+const ModalOverlay = ({ onConfirm, title, message, result }) => {
    return (
       <Wrapper>
          <Container>{title}</Container>
          <TextWrapper>
             <p>{message}</p>
-            <span>{result}</span>
+            <h3>{result}</h3>
          </TextWrapper>
          <ButtonWrapper>
             <button type="button" onClick={onConfirm}>
@@ -24,18 +25,20 @@ const ModalOverly = ({ onConfirm, title, message, result }) => {
 }
 
 export const Result = ({ setModalIsVisible, title, message, result }) => {
-   const cancelHandler = () => {
+   const navigate = useNavigate()
+   const closeModalHandler = () => {
+      navigate('/quiz')
       setModalIsVisible(false)
    }
    return (
       <>
          {ReactDOM.createPortal(
-            <Backdrop onConfirm={cancelHandler} />,
+            <Backdrop />,
             document.getElementById('backdrop')
          )}
          {ReactDOM.createPortal(
-            <ModalOverly
-               onConfirm={cancelHandler}
+            <ModalOverlay
+               onConfirm={closeModalHandler}
                title={title}
                message={message}
                result={result}
@@ -52,6 +55,8 @@ const BackdropWrapper = styled.div`
    left: 0;
    width: 100%;
    height: 100vh;
+   background: #959595;
+   opacity: 0.5;
 `
 const Wrapper = styled.div`
    width: 480px;
@@ -74,12 +79,27 @@ const Container = styled.div`
    align-items: center;
    margin: 15px auto;
    font-size: 25px;
+   border-bottom: 1px solid gray;
 `
 const TextWrapper = styled.div`
    text-align: center;
    padding: 20px;
+   & p {
+      font-size: 18px;
+      margin-bottom: 35px;
+   }
 `
 const ButtonWrapper = styled.div`
    text-align: end;
-   padding: 20px;
+   padding-right: 30px;
+   & button {
+      font-size: 18px;
+      cursor: pointer;
+      width: 95px;
+      height: 38px;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      background-color: #544566;
+   }
 `

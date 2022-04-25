@@ -42,6 +42,7 @@ export const QuestionForm = () => {
                </StyledForm>
             </div>
          </Container>
+         {question.forms.length === 0 ? <h4>Let&apos;s create a QUIZ!</h4> : ''}
          <Questions />
          <Toolbar />
       </Wrapper>
@@ -51,6 +52,12 @@ export const QuestionForm = () => {
 const Wrapper = styled.div`
    height: 100%;
    padding-bottom: 30px;
+   & h4 {
+      text-align: center;
+      font-weight: 500;
+      font-size: 20px;
+      margin-top: 20px;
+   }
 `
 const Container = styled.div`
    margin: auto;

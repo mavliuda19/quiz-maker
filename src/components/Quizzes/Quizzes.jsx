@@ -11,7 +11,15 @@ import {
    TEXT,
 } from '../../utils/constants'
 
-export const Quizzes = ({ options, questionType, formId, correctAnswer }) => {
+export const Quizzes = ({
+   options,
+   questionType,
+   formId,
+   correctAnswer,
+   required,
+   changeInputValueHandler,
+   inputValue,
+}) => {
    const dispatch = useDispatch()
 
    const checkAnswer = (answer) => {
@@ -28,14 +36,25 @@ export const Quizzes = ({ options, questionType, formId, correctAnswer }) => {
       case TEXT:
          content = (
             <WrapperText>
-               <input type="text" required placeholder="Мой ответ" />
+               <input
+                  type="text"
+                  required={required}
+                  placeholder="Мой ответ"
+                  value={inputValue}
+                  onChange={(e) => changeInputValueHandler(e.target.value)}
+               />
             </WrapperText>
          )
          break
       case DATE:
          content = (
             <WrapperText>
-               <input type={questionType} />
+               <input
+                  type={questionType}
+                  required={required}
+                  value={inputValue}
+                  onChange={(e) => changeInputValueHandler(e.target.value)}
+               />
             </WrapperText>
          )
          break
@@ -52,6 +71,7 @@ export const Quizzes = ({ options, questionType, formId, correctAnswer }) => {
                               value={option.optionText}
                               name="answer"
                               id={option.id}
+                              required={required}
                               onChange={(e) =>
                                  checkAnswer(e.target.value, formId)
                               }
@@ -72,7 +92,9 @@ export const Quizzes = ({ options, questionType, formId, correctAnswer }) => {
                <input
                   placeholder="Email address"
                   type={questionType}
-                  required
+                  required={required}
+                  value={inputValue}
+                  onChange={(e) => changeInputValueHandler(e.target.value)}
                />
             </WrapperText>
          )
@@ -80,7 +102,12 @@ export const Quizzes = ({ options, questionType, formId, correctAnswer }) => {
       case NUMBER:
          content = (
             <WrapperText>
-               <input placeholder="Мой ответ" />
+               <input
+                  placeholder="Мой ответ"
+                  required={required}
+                  value={inputValue}
+                  onChange={(e) => changeInputValueHandler(e.target.value)}
+               />
             </WrapperText>
          )
          break
