@@ -10,9 +10,8 @@ function Backdrop({ onConfirm }) {
    return <BackdropWrapper onClick={onConfirm} />
 }
 
-const ModalOverly = (props) => {
+const ModalOverlay = (props) => {
    const dispatch = useDispatch()
-   console.log(props.id)
 
    const addQuestionType = (id, text, type) => {
       dispatch(formActions.changeQuestionType({ id, text, type }))
@@ -49,7 +48,7 @@ export const Modal = ({ id }) => {
             document.getElementById('backdrop')
          )}
          {ReactDOM.createPortal(
-            <ModalOverly id={id} />,
+            <ModalOverlay id={id} />,
             document.getElementById('modal-root')
          )}
       </>

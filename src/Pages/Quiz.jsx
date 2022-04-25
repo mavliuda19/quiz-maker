@@ -1,16 +1,20 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { Quizzes } from '../components/Quizzes/Quizzes'
 import { Result } from '../components/ui/Result'
+import { formActions } from '../store/slices/formSlice'
 
 export const Quiz = () => {
-   const [questionIndex, setQuestionIndex] = useState(0)
-   const [modalIsVisible, setModalIsVisible] = useState(false)
-   const [message, setMessage] = useState(null)
-   const [title, setTitle] = useState('')
+   const dispatch = useDispatch()
    const form = useSelector((state) => state.form.question)
    const forms = useSelector((state) => state.form.question.questions)
+
+   const [questionIndex, setQuestionIndex] = useState(0)
+   const [modalIsVisible, setModalIsVisible] = useState(false)
+   const [inputValue, setInputValue] = useState('')
+   const [message, setMessage] = useState('')
+   const [title, setTitle] = useState('')
 
    const moveNextQuestion = () => {
       if (questionIndex !== forms.length - 1) {
@@ -18,23 +22,21 @@ export const Quiz = () => {
       } else {
          setModalIsVisible(true)
       }
-   }
-
-   const toogleModalHandler = () => {
-      setModalIsVisible(true)
-      if (form.score === forms.length) {
-         setTitle('Поздравляем! 🎉')
-         setMessage('Вы ответили верно на все вопросы! ✅')
-      } else if ((forms.score * 100) / forms.length >= 50) {
-         setTitle('Неплохой результат! 🙂')
-         setMessage('Вы дали более половины правильных ответов! 🙌')
-      } else {
-         setTitle('Стоит постараться!')
-         setMessage('Пока у вас меньше половины правильных ответов!')
+      if (inputValue !== '') {
+         dispatch(formActions.checkAnswer())
+         setInputValue('')
       }
    }
-
-   const result = `${form.score} из ${forms.length}`
+   const openModalHandler = () => {
+      setModalIsVisible(true)
+      setTitle(form.title)
+      setMessage('Ответ записан.')
+   }
+   const changeInputValueHandler = (value) => {
+      setInputValue(value)
+   }
+   // const resultOfQuiz = `${form.score} из ${forms.length}`
+   const numberOfQuestions = `${questionIndex + 1}/${forms.length}`
 
    return (
       <>
@@ -47,12 +49,19 @@ export const Quiz = () => {
 
          <div>
             <Container>
-               <TextWrapper>{forms[questionIndex].questionText}</TextWrapper>
+               <TextWrapper>
+                  <p>{forms[questionIndex].questionText}</p>
+                  <h4>{numberOfQuestions}</h4>
+               </TextWrapper>
+
                <Quizzes
                   options={forms[questionIndex].options}
                   questionType={forms[questionIndex].questionType}
                   formId={forms[questionIndex].id}
+                  required={forms[questionIndex].required}
                   correctAnswer={forms[questionIndex].correctAnswer}
+                  inputValue={inputValue}
+                  changeInputValueHandler={changeInputValueHandler}
                />
             </Container>
          </div>
@@ -72,7 +81,7 @@ export const Quiz = () => {
             </div>
             <div>
                {forms.length - 1 === questionIndex ? (
-                  <button type="button" onClick={toogleModalHandler}>
+                  <button type="button" onClick={openModalHandler}>
                      Завершить тест
                   </button>
                ) : (
@@ -87,7 +96,7 @@ export const Quiz = () => {
                setModalIsVisible={setModalIsVisible}
                title={title}
                message={message}
-               result={result}
+               // result={resultOfQuiz}
             />
          )}
       </>
@@ -192,8 +201,14 @@ const ButtonWrapper = styled.div`
       }
    }
 `
-const TextWrapper = styled.p`
+const TextWrapper = styled.div`
    font-size: 20px;
    margin-left: 10px;
+   width: 710px;
+   display: flex;
+   justify-content: space-between;
    margin-top: 10px;
+   & h4 {
+      color: rgb(103, 58, 183);
+   }
 `

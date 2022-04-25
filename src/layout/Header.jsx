@@ -34,7 +34,11 @@ export const Header = () => {
             </Wrapper>
             <Container>
                <EyeIcon />
-               <button type="button" onClick={saveQuestionsHandler}>
+               <button
+                  type="button"
+                  onClick={saveQuestionsHandler}
+                  disabled={question.forms.length === 0}
+               >
                   Сохранить
                </button>
                <Avatar />
